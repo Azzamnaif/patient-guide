@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دليل التنويم التفاعلي | المدينة الطبية الجامعية - جامعة الملك سعود</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0b4b73;
+            --secondary: #16729e;
+            --accent: #eaf4f9;
+            --gold: #c5a059;
+            --text-main: #2c3e50;
+            --text-muted: #64748b;
+            --bg-body: #f4f7f6;
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --radius: 14px;
+            --shadow: 0 10px 30px rgba(0,0,0,0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.8;
+            padding-bottom: 90px;
+        }
+
+        /* --- Header --- */
+        header {
+            background-color: var(--bg-card);
+            padding: 15px 5%;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            border-bottom: 3px solid var(--gold);
+        }
+
+        .logo-box h1 {
+            color: var(--primary);
+            font-size: 1.35rem;
+            font-weight: 900;
+        }
+
+        .logo-box p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        /* --- Search Box Header --- */
+        .search-box-header {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-box-header input {
+            padding: 8px 35px 8px 15px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-body);
+            font-size: 0.88rem;
+            outline: none;
+            transition: 0.3s;
+            width: 200px;
+        }
+
+        .search-box-header input:focus {
+            width: 250px;
+            border-color: var(--secondary);
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(22, 114, 158, 0.1);
+        }
+
+        .search-box-header span {
+            position: absolute;
+            right: 12px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .action-btn {
+            background: var(--accent);
+            color: var(--primary);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.3s;
+        }
+
+        .action-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* --- Notice Banner --- */
+        .notice-banner {
+            background: linear-gradient(135deg, #fff9db, #fff3bf);
+            color: #745200;
+            padding: 12px 20px;
+            text-align: center;
+            font-size: 0.92rem;
+            font-weight: 700;
+            border-bottom: 1px solid #ffe066;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        /* --- Navigation Tabs --- */
+        .nav-tabs {
+            display: flex;
+            overflow-x: auto;
+            gap: 8px;
+            padding: 14px 5%;
+            background: var(--bg-card);
+            box-shadow: inset 0 -1px 0 var(--border-color);
+            scrollbar-width: thin;
+        }
+
+        .nav-tabs::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .nav-tabs::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        .tab-btn {
+            background: var(--bg-body);
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+            padding: 9px 18px;
+            border-radius: 22px;
+            font-weight: 700;
+            font-size: 0.92rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.3s;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(11, 75, 115, 0.2);
+        }
+
+        /* --- Main Content Container --- */
+        .container {
+            max-width: 950px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .section-pane {
+            display: none;
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .section-pane.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Cards Layout --- */
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            border-right: 6px solid var(--primary);
+            border-top: 1px solid var(--border-color);
+            border-left: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card h3 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent);
+            font-weight: 800;
+        }
+
+        .card p, .card li {
+            color: var(--text-main);
+            font-size: 0.98rem;
+            margin-bottom: 12px;
+        }
+
+        .card ul {
+            list-style-type: none;
+            padding-right: 0;
+        }
+
+        .card ul li {
+            position: relative;
+            padding-right: 25px;
+            margin-bottom: 12px;
+        }
+
+        .card ul li::before {
+            content: "✓";
+            color: var(--secondary);
+            position: absolute;
+            right: 0;
+            font-size: 0.95rem;
+            font-weight: 900;
+        }
+
+        /* --- FAQ / Accordion --- */
+        .faq-category-title {
+            color: var(--secondary);
+            font-size: 1.15rem;
+            margin: 30px 0 12px 0;
+            font-weight: 800;
+            border-right: 4px solid var(--gold);
+            padding-right: 12px;
+        }
+
+        details.faq-box {
+            background: var(--bg-card);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        details.faq-box[open] {
+            border-color: var(--secondary);
+            box-shadow: 0 4px 15px rgba(22, 114, 158, 0.08);
+        }
+
+        summary.faq-q {
+            padding: 16px 22px;
+            font-weight: 700;
+            color: var(--primary);
+            cursor: pointer;
+            list-style: none;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        summary.faq-q::-webkit-details-marker {
+            display: none;
+        }
+
+        summary.faq-q::after {
+            content: "+";
+            font-size: 1.4rem;
+            color: var(--secondary);
+            font-weight: 400;
+        }
+
+        details.faq-box[open] summary.faq-q::after {
+            content: "−";
+        }
+
+        .faq-ans {
+            padding: 0 22px 20px 22px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            border-top: 1px solid #f8fafc;
+            padding-top: 14px;
+        }
+
+        /* --- Contact Grid --- */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .contact-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 24px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--secondary);
+        }
+
+        .contact-card h4 {
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        .contact-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .contact-card a {
+            display: inline-block;
+            margin-top: 15px;
+            color: white;
+            background: var(--secondary);
+            padding: 8px 18px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .contact-card a:hover {
+            background: var(--primary);
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 18px;
+            background: var(--bg-card);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.04);
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Highlight Search Result */
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- الترويسة العليا -->
+    <header>
+        <div class="logo-box">
+            <h1>دليل التنويم التفاعلي</h1>
+            <p>المدينة الطبية الجامعية - جامعة الملك سعود</p>
+        </div>
+        <div class="header-actions">
+            <div class="search-box-header">
+                <span>🔍</span>
+                <input type="text" id="liveSearchInput" placeholder="ابحث في الدليل (اضغط Enter)..." onkeyup="handleSearch(event)">
+            </div>
+            <button class="action-btn" onclick="window.print()">🖨️ طباعة</button>
+            <a href="https://onelink.to/sihi" target="_blank" class="action-btn">📱 تطبيق صحي</a>
+        </div>
+    </header>
+
+    <div class="notice-banner">
+        📌 تنبيه: هذا الدليل توعوي، والتعليمات النهائية تعتمد حسب الحالة وتوجيه الفريق المعالج.
+    </div>
+
+    <!-- شريط التبويبات الذكي -->
+    <div class="nav-tabs" id="navTabsContainer">
+        <button class="tab-btn active" onclick="switchTab('welcome', event)">قبل التنويم</button>
+        <button class="tab-btn" onclick="switchTab('admission', event)">إجراءات الدخول</button>
+        <button class="tab-btn" onclick="switchTab('stay', event)">أثناء الإقامة</button>
+        <button class="tab-btn" onclick="switchTab('visitors', event)">الزيارة والمرافقون</button>
+        <button class="tab-btn" onclick="switchTab('safety', event)">الأمن والسلامة</button>
+        <button class="tab-btn" onclick="switchTab('rights', event)">الحقوق والمسؤوليات</button>
+        <button class="tab-btn" onclick="switchTab('support', event)">الخدمات الداعمة</button>
+        <button class="tab-btn" onclick="switchTab('discharge', event)">عند الخروج</button>
+        <button class="tab-btn" onclick="switchTab('faqs', event)">الأسئلة الشائعة</button>
+        <button class="tab-btn" onclick="switchTab('contact', event)">التواصل</button>
+    </div>
+
+    <div class="container" id="mainContentContainer">
+
+        <!-- 1. قبل التنويم -->
+        <section id="welcome" class="section-pane active searchable-item">
+            <div class="card">
+                <h3>مرحبًا بكم في المدينة الطبية الجامعية</h3>
+                <p>ندرك أن دخول المستشفى للتنويم قد يكون تجربة جديدة أو مصحوبة بشيء من القلق للمريض وأسرته، لذلك أُعد هذا الدليل ليكون مرشدًا يعرّفكم بالإجراءات المتبعة والخدمات المتاحة بكل شفافية وراحة.</p>
+                <p>نؤمن بأن الرعاية الصحية المتميزة لا تقتصر على العلاج فحسب، بل تشمل توفير تجربة إنسانية تقوم على الاحترام والتواصل الواضح والالتزام بأعلى معايير جودة وسلامة المرضى.</p>
+            </div>
+            <div class="card">
+                <h3>الوصول إلى مستشفيات المدينة الطبية</h3>
+                <p>تضم المدينة الطبية ثلاثة مستشفيات تعليمية رئيسية، يُرجى التأكد من الموقع المخصص لموعدك:</p>
+                <ul>
+                    <li>مستشفى الملك خالد الجامعي (KKUH)</li>
+                    <li>مستشفى الملك عبدالعزيز الجامعي (KAUH)</li>
+                    <li>مستشفى طب الأسنان الجامعي</li>
+                </ul>
+                <p>يتوفر فريق علاقات المرضى وأفراد الأمن عند المداخل لتقديم الدعم والمساعدة الإرشادية فور وصولكم.</p>
+            </div>
+        </section>
+
+        <!-- 2. إجراءات الدخول والتنويم -->
+        <section id="admission" class="section-pane searchable-item">
+            <div class="card">
+                <h3>إجراءات مكتب التنويم</h3>
+                <p>عند وصول المريض لإجراء التنويم، يتم التوجه لمكتب التنويم لاستكمال الإجراءات الرسمية بالتنسيق مع الفرق الطبية والتمريضية:</p>
+                <ul>
+                    <li>التحقق من الهوية الوطنية أو الإقامة ومطابقة البيانات الرسمية.</li>
+                    <li>مراجعة أمر التنويم الصادر من الطبيب المعالج والتحقق من التخصص.</li>
+                    <li>تحديث بيانات الاتصال في النظام الإلكتروني وإصدار سوار التعريف الطبي.</li>
+                    <li>تخصيص السرير المناسب وتوجيه المريض والقسم المعني بأمان.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>سوار التعريف وفريق الرعاية</h3>
+                <p><strong>سوار التعريف الطبي:</strong> وسيلة أساسية لتأكيد الهوية بدقة قبل إعطاء الأدوية أو الفحوصات، ويُرجى عدم إزالته طوال فترة التنويم.</p>
+                <p><strong>فريق الرعاية:</strong> يضم فريقاً متكاملاً (الطبيب الاستشاري، الأطباء المعالجون، طاقم التمريض على مدار الساعة، الصيدلي السريري، وأخصائيو التغذية والعلاج الطبيعي).</p>
+            </div>
+        </section>
+
+        <!-- 3. أثناء الإقامة -->
+        <section id="stay" class="section-pane searchable-item">
+            <div class="card">
+                <h3>تجهيزات الغرفة وخدمات الضيافة</h3>
+                <p>تضم الغرفة تجهيزات لضمان راحتكم:</p>
+                <ul>
+                    <li>سرير طبي قابل للتعديل مع زر نداء التمريض (يعمل على مدار الساعة).</li>
+                    <li>إمكانية التحكم بدرجة حرارة الغرفة، وخدمات النظافة والتعقيم المستمرة.</li>
+                    <li>خزنة لحفظ المقتنيات الشخصية (يُنصح بعدم إحضار مبالغ مالية كبيرة أو مجوهرات ثمينة).</li>
+                    <li>خدمة الإنترنت اللاسلكي (Wi-Fi) عبر التواصل مع مسؤول تجربة المريض بالقسم.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>وجبات المرضى وبروتوكولات الوقاية</h3>
+                <p><strong>الوجبات:</strong> تُعد الوجبات (إفطار، غداء، عشاء) تحت إشراف أخصائيي التغذية العلاجية بما يتوافق بدقة مع الخطة الطبية لكل مريض.</p>
+                <p><strong>الوقاية من العدوى:</strong> الالتزام بغسل اليدين واستخدام المعقمات، وعدم مشاركة الأدوات الشخصية، وتجنب الزيارة في حال وجود أعراض مرضية.</p>
+            </div>
+        </section>
+
+        <!-- 4. الزيارة والمرافقون -->
+        <section id="visitors" class="section-pane searchable-item">
+            <div class="card">
+                <h3>أوقات الزيارة الرسمية</h3>
+                <ul>
+                    <li><strong>من الأحد إلى الخميس:</strong> من الساعة 4:00 عصراً حتى 8:00 مساءً.</li>
+                    <li><strong>يومي الجمعة والسبت:</strong> من الساعة 1:00 ظهراً حتى 8:00 مساءً.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>ضوابط المرافقين والأطفال</h3>
+                <p><strong>المرافقون:</strong> يُسمح بمرافق واحد للحالات التي تتطلب ذلك طبياً (الأطفال، كبار السن، ذوي الإعاقة) وفق الضوابط المعتمدة.</p>
+                <p><strong>الأطفال:</strong> يُسمح بدخولهم للزيارة في عطلة نهاية الأسبوع (الجمعة والسبت) فقط بمعية مرافق بالغ.</p>
+                <p><strong>الأقسام الحرجة:</strong> يمنع دخول الأطفال لأقسام العناية المركزة، العزل، الأونكولوجي (الأورام)، والطوارئ حفاظاً على سلامتهم.</p>
+            </div>
+        </section>
+
+        <!-- 5. الأمن والسلامة -->
+        <section id="safety" class="section-pane searchable-item">
+            <div class="card">
+                <h3>أنظمة الأمن والسلامة</h3>
+                <ul>
+                    <li><strong>بيئة خالية من التدخين:</strong> المستشفى بيئة صحية تمنع التدخين تماماً بجميع أشكاله (بما فيها السجائر الإلكترونية) داخل المباني والساحات.</li>
+                    <li><strong>المواد الممنوعة:</strong> يمنع إدخال المواد القابلة للاشتعال، الألعاب النارية، أو الأدوات الحادة.</li>
+                    <li><strong>حالات الطوارئ:</strong> عند سماع إنذار الطوارئ، يُرجى الهدوء التام والاتباع الفوري لتعليمات فريق الأمن وعدم استخدام المصاعد نهائياً.</li>
+                    <li><strong>المفقودات:</strong> في حال فقدان أي مقتنى، يُرجى مراجعة إدارة الأمن والسلامة (مكتب المفقودات).</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 6. الحقوق والمسؤوليات -->
+        <section id="rights" class="section-pane searchable-item">
+            <div class="card">
+                <h3>حقوق المريض</h3>
+                <ul>
+                    <li>تلقي الرعاية الصحية باحترام وكرامة وبدون أي تمييز.</li>
+                    <li>معرفة أسماء الفريق الصحي المعالج، تفاصيل التشخيص، والخطة العلاجية.</li>
+                    <li>إعطاء الموافقة المستنيرة قبل أي إجراء طبي أو الحق في رفض العلاج نظاماً.</li>
+                    <li>حماية سرية المعلومات الطبية والخصوصية الشخصية التامة.</li>
+                    <li>تقديم الشكاوى والمقترحات عبر قنوات علاقات المرضى دون تأثير على مستوى الرعاية.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>مسؤوليات المريض</h3>
+                <ul>
+                    <li>تقديم معلومات صحية وتاريخ مرضي دقيق وكامل للفريق الصحي.</li>
+                    <li>الالتزام التام بالخطة العلاجية والتعليمات الطبية ومواعيد الفحوصات.</li>
+                    <li>احترام حقوق وممتلكات المستشفى والآخرين والتقيد التام بسياسات الزيارة.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 7. الخدمات الداعمة -->
+        <section id="support" class="section-pane searchable-item">
+            <div class="card">
+                <h3>الخدمات المساندة لرحلتك</h3>
+                <ul>
+                    <li><strong>الخدمة الاجتماعية الإكلينيكية:</strong> تقديم الدعم النفسي والاجتماعي، دراسة الظروف الأسرية، وربط المريض بالجهات الداعمة.</li>
+                    <li><strong>الشؤون الدينية:</strong> المساعدة في أحكام الصلاة والطهارة وتقديم الرعاية الروحية للمرضى.</li>
+                    <li><strong>التثقيف الصحي:</strong> تمكين المريض وذويه من فهم الحالة الصحية وطريقة استخدام الأدوية بعد الخروج.</li>
+                    <li><strong>الترجمة وذوي الإعاقة:</strong> توفير خدمات الترجمة لغير الناطقين بالعربية وترجمة لغة الإشارة لذوي الإعاقة السمعية.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 8. الخروج والمتابعة -->
+        <section id="discharge" class="section-pane searchable-item">
+            <div class="card">
+                <h3>خطوات الاستعداد للخروج</h3>
+                <p>بمجرد صدور أمر الخروج الطبي من الاستشاري المعالج، يتم الآتي:</p>
+                <ul>
+                    <li>شرح ملخص الخروج الصحي والتعليمات المنزلية للتعافي الوقائي.</li>
+                    <li>استلام الأدوية المنزلية الموصوفة من الصيدلية مع توضيح الجرعات بدقة.</li>
+                    <li>تأكيد مواعيد المراجعة القادمة في العيادات الخارجية عبر النظام أو رسائل الجوال.</li>
+                    <li>تنسيق الأجهزة الطبية المساندة (إن وجدت) بالتنسيق مع الخدمة الاجتماعية.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 9. الأسئلة الشائعة -->
+        <section id="faqs" class="section-pane searchable-item">
+            <div class="card">
+                <h3>الأسئلة الشائعة للمرضى ومرافقيهم</h3>
+                
+                <h4 class="faq-category-title">أولاً: الإقامة والتنويم</h4>
+                <details class="faq-box">
+                    <summary class="faq-q">لماذا لا يمكنني الحصول على غرفة خاصة (منفردة)؟</summary>
+                    <div class="faq-ans">نظراً لمحدودية الغرف الخاصة، تُخصص وفق معايير طبية صارمة كحالات العزل أو الاحتياجات السريرية الخاصة التي تتطلب ذلك لسلامة المرضى.</div>
+                </details>
+                <details class="faq-box">
+                    <summary class="faq-q">هل يمكن تغيير الغرفة أو مبيت المرافق؟</summary>
+                    <div class="faq-ans">يتم تخصيص الغرف حسب توفر الأسرة والحالة الطبية، ويُسمح بمبيت المرافق بتقدير من الفريق الصحي وفق سياسة القسم.</div>
+                </details>
+
+                <h4 class="faq-category-title">ثانياً: التقارير والخدمات</h4>
+                <details class="faq-box">
+                    <summary class="faq-q">كيف أطلب تقريراً طبياً أو أقدم ملاحظة؟</summary>
+                    <div class="faq-ans">يمكن طلب التقارير الطبية عبر تطبيق "صحي" الإلكتروني، وللملاحظات يمكن التواصل مباشرة مع طاقم علاقات المرضى.</div>
+                </details>
+
+                <h4 class="faq-category-title">ثالثاً: المستلزمات والأدوية</h4>
+                <details class="faq-box">
+                    <summary class="faq-q">هل يمكن إحضار طعام من خارج المستشفى؟</summary>
+                    <div class="faq-ans">يُفضل الالتزام بوجبات المستشفى المصممة خصيصاً لخضوعك العلاجي، ويُمنع إدخال أغذية خارجية إلا بعد موافقة الطاقم الطبي.</div>
+                </details>
+            </div>
+        </section>
+
+        <!-- 10. التواصل معنا -->
+        <section id="contact" class="section-pane searchable-item">
+            <div class="card">
+                <h3>قنوات التواصل الرسمية</h3>
+                <p>الإدارة العامة لشؤون المرضى في خدمتكم على مدار الساعة:</p>
+                
+                <div class="contact-grid">
+                    <div class="contact-card">
+                        <h4>مركز الاتصال الموحد</h4>
+                        <p>للاستفسارات العامة والمواعيد</p>
+                        <a href="tel:920004071">اتصل: 920004071</a>
+                    </div>
+                    <div class="contact-card">
+                        <h4>علاقات المرضى</h4>
+                        <p>للشكاوى ومتابعة الملاحظات</p>
+                        <a href="tel:0114670000">اتصل: 0114670000</a>
+                    </div>
+                    <div class="contact-card">
+                        <h4>الخدمة الاجتماعية</h4>
+                        <p>للدعم الاجتماعي والنفسي</p>
+                        <a href="tel:0114671356">اتصل: 0114671356</a>
+                    </div>
+                    <div class="contact-card">
+                        <h4>تطبيق صحي</h4>
+                        <p>بوابة الخدمات الإلكترونية</p>
+                        <a href="https://onelink.to/sihi" target="_blank">تحميل التطبيق</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- التذييل السفلي -->
+    <footer>
+        المدينة الطبية الجامعية - جامعة الملك سعود | إدارة شؤون المرضى © 2026
+    </footer>
+
+    <!-- جافاسكريبت للتحكم والبحث الفوري -->
+    <script>
+        function switchTab(tabId, event) {
+            document.querySelectorAll('.section-pane').forEach(pane => {
+                pane.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+            if(event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // خاصية البحث الفوري وعند ضغط Enter
+        function handleSearch(event) {
+            const query = document.getElementById('liveSearchInput').value.trim().toLowerCase();
+            
+            if (event.key === 'Enter' || query.length > 2 || query === '') {
+                if (query === '') {
+                    // العودة للوضع الطبيعي وإظهار التبويب الأول
+                    switchTab('welcome');
+                    return;
+                }
+
+                // البحث داخل أقسام الدليل وإظهار القسم المطابق تلقائياً
+                const sections = document.querySelectorAll('.searchable-item');
+                let foundTabId = '';
+
+                sections.forEach(sec => {
+                    const text = sec.textContent.toLowerCase();
+                    if (text.includes(query)) {
+                        foundTabId = sec.id;
+                    }
+                });
+
+                if (foundTabId) {
+                    switchTab(foundTabId);
+                    // تفعيل الزر المناسب في التبويبات العلوي
+                    document.querySelectorAll('.tab-btn').forEach(btn => {
+                        if(btn.getAttribute('onclick').includes(foundTabId)) {
+                            btn.classList.add('active');
+                        } else {
+                            btn.classList.remove('active');
+                        }
+                    });
+                }
+            }
+        }
+    </script>
+</body>
+</html>
